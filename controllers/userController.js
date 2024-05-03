@@ -1,11 +1,10 @@
 const { User, Thought } = require('../models');
 
 // /api/users
-
 // GET all users
 const getUsers = async function(req, res) {
     try {
-        const users = await User.find().populate('users');
+        const users = await User.find()
         res.json(users);
     } catch (err) {
         res.status(500).json(err);
@@ -24,7 +23,6 @@ const createUser = async function (req, res) {
 };
 
 // /api/users/:userId
-
 // GET a single user by its _id and populated thought and friend data (subdocuments)
 const getOneUser = async function (req, res) {
     try {
@@ -76,7 +74,6 @@ const deleteUser = async function (req, res) {
 };
 
 // /api/users/:userId/friends/:friendId
-
 // POST to add a new friend to a user's friend list
 const addFriend = async function(req, res) {
     try {
