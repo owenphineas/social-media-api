@@ -3,13 +3,13 @@ const { Schema, model } = require('mongoose');
 const reactionSchema = new Schema(
     {
         reactionId: {
-            // TO DO: Use mongoose's ObjectId type
-            // TO DO: Set default value to a new ObjectId
+            type: Schema.Types.ObjectId,
+            default: () => new Schema.Types.ObjectId()
         },
         reactionBody: {
             type: String,
             required: true,
-            // TO DO: 280 character maximum
+            maxlength: 280,
         },
         username: {
             type: String,
@@ -18,7 +18,17 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            // TO DO: use getter method to format the timestamp on query
+            get: v => v.toString()
         },
-    }
-)
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true,
+        }
+    }    
+);
+
+const Reaction = model('reaction', reactionSchema);
+
+module.exports = Reaction;
