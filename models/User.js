@@ -27,14 +27,20 @@ const userSchema = new Schema(
                 ref: [ this ],
             }
         ]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        }
     }
 );
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 // Retrieves the length of the 'friends' array
 userSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 });
 
-module.exports = userSchema;
+module.exports = User;

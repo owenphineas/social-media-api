@@ -1,17 +1,18 @@
 const { Schema, model } = require('mongoose');
-
-// TO DO: import reactionSchema (?)
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {
         type: String,
         required: true,
-        // TO DO: must be between 1 and 280 characters
+        minlength: 1,
+        maxlength: 280,
     },
     createdAt: {
         type: Date,
-        default: Date.now
-        // TO DO: use a getter method to format the timestamp on query
+        default: Date.now,
+        // Format the timestamp on query
+        get: v => v.toString()
     },
     username: {
         type: String,
@@ -20,16 +21,23 @@ const thoughtSchema = new mongoose.Schema({
     reactions: [
         {
         type: Schema.Types.ObjectId,
-        ref: [ reactionSchema ],
+        ref: [reactionSchema],
         }
     ],
-});
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true,
+        }
+    }
+);
 
-const Thought = mongoose.model('Thought', thoughtSchema);
+const Thought = model('thought', thoughtSchema);
 
 // Retrieves the length of the thought's reactions array field on query
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });
 
-module.exports = thoughtSchema;
+module.exports = Thought;
