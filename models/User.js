@@ -24,7 +24,7 @@ const userSchema = new Schema(
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: [ this ],
+                ref: 'friend',
             }
         ]
     },
@@ -36,7 +36,7 @@ const userSchema = new Schema(
     }
 );
 
-const User = model('User', userSchema);
+const User = model('user', userSchema);
 
 // Retrieves the length of the 'friends' array
 userSchema.virtual('friendCount').get(function() {
