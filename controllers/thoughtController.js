@@ -80,8 +80,6 @@ const deleteThought = async function (req, res) {
             res.status(404).json({ message: 'No thought found with that ID.' });
         }
 
-        // Delete thought ID from user thoughts array ??
-
         res.json({ message:"Thought Deleted!" });
     } catch (err) {
         res.status(500).json(err);
@@ -112,8 +110,8 @@ const addReaction = async function (req, res) {
 const removeReaction = async function (req, res) {
     try {
         const thought = await Thought.findOneAndUpdate(
-            { _id: req.params.userId },
-            { $pull: { reaction: { reactionId: req.params.reactionId } } },
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: { reactionId: req.params.reactionId } } },
             { runValidators: true, new: true }
         );
 
@@ -121,7 +119,7 @@ const removeReaction = async function (req, res) {
             res.status(404).json({ message: 'No thought found with that ID.' });
         }
 
-        res.json({ message: 'Reaction Deleted!' });
+        res.json(thought);
     } catch (err) {
         res.status(500).json(err);
     }
